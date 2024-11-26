@@ -1,0 +1,69 @@
+# Archivos y directorios específicos de Python
+*.py[cod]
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+env/
+venv/
+ENV/
+.venv/
+ENV.bak/
+venv.bak/
+
+# Archivos de configuración de PyCharm
+.idea/
+*.iml
+
+# Archivos específicos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración de editores de texto
+*.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Archivos específicos de la línea de comandos y compilaciones
+*.log
+*.lock
+*.swp
+*.swo
+*~
+
+# Archivos y directorios específicos de paquetes
+.pytest_cache/
+.coverage
+.tox/
+.cache/
+.mypy_cache/
+.hypothesis/
+.pyre/
+
+# Archivos de configuración personal
+.vscode/
+*.code-workspace
+
+# Archivos y directorios de entornos virtuales
+.Python
+*.pypirc
+
+# Configuración de herramientas de análisis de código
+htmlcov/
+nosetests.xml
+coverage.xml
+*.cover
+.pytype/
+
+# Archivos de configuración de Docker
+docker-compose.yml
+Dockerfile
+
+# Archivos de instalación de pipenv
+Pipfile.lock
+
+# Otros archivos que quieras ignorar
+# Añade aquí otros archivos y directorios específicos de tu proyecto que quieras ignorar.
