@@ -1,0 +1,35 @@
+import sqlite3
+import os
+
+
+class ConversionDict:
+    _instance = None
+    _conversion_dict = None
+
+    def __new__(cls, db_path):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._conversion_dict = cls.load_conversion_dict(db_path)
+        return cls._instance
+
+    @classmethod
+    def load_conversion_dict(cls, db_path: str) -> dict:
+        """Load the conversion dictionary from the database
+        :param db_path: Path to the SQLite database
+        :return: A dictionary with the conversion data
+        """
+        root_path = get_project_root()
+        full_db_path = os.path.join(root_path, db_path)
+        conn = sqlite3.connect(full_db_path)
+        cursor = conn.cursor()
+        cursor.execute('SELECT js_code, py_code FROM conversion_dict')
+        rows = cursor.fetchall()
+        conn.close()
+        return {row[0]: row[1] for row in rows}
+
+    def get_conversion_dict(self):
+        return self._conversion_dict
+
+
+def get_project_root():
+    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

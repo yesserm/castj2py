@@ -1,7 +1,10 @@
 import os
 import sys
+
+from src.core.js_to_py_translator import translate_js_to_py
 from utils.logging_config import configure_logging
 from gui.main_window import MainWindow
+from utils.conversion_dict import ConversionDict, get_project_root
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -9,9 +12,27 @@ logger = configure_logging()
 
 
 def main():
+    logger.info("Initializing the application")
+    db_path = os.path.join(get_project_root(), '../conversion_dict.db')
+
+    conversion_instance = ConversionDict(db_path)
+    conversion_dict = conversion_instance.get_conversion_dict()
+    logger.info(f"Loaded {len(conversion_dict)} conversion entries")
+
+    js_file_path = '../samples/file.js'
+
+    with open(js_file_path, 'r') as file:
+        js_code = file.read()
+
+    py_code = translate_js_to_py(js_code, conversion_dict)
+    logger.info(f"Translated JS to Python:\n{py_code}")
+
     logger.info("Starting the application")
-    window = MainWindow()
-    window.mainloop()
+    try:
+        window = MainWindow()
+        window.mainloop()
+    except Exception as e:
+        logger.error(f"An error occurred: {e}")
     logger.info("Closing the application")
 
 

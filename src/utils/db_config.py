@@ -1,6 +1,7 @@
 import sqlite3
 import json
 import logging
+import os
 
 logger = logging.getLogger('app_logger')
 
@@ -10,7 +11,8 @@ def create_db(db_path) -> None:
     :param db_path: Path to the SQLite database
     :return: None
     """
-    conn = sqlite3.connect(db_path)
+    db_abs_path = os.path.join(get_project_root(), db_path)
+    conn = sqlite3.connect(db_abs_path)
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS conversion_dict ( 
@@ -22,6 +24,10 @@ def create_db(db_path) -> None:
     conn.close()
 
 
+def get_project_root():
+    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 def insert_conversion(db_path: str, js_code: str, py_code: str) -> int:
     """Insert a new conversion into the database
     :param db_path: Path to the SQLite database
@@ -29,6 +35,7 @@ def insert_conversion(db_path: str, js_code: str, py_code: str) -> int:
     :param py_code: Code in Python
     :return: The row ID of the inserted conversion or 0 if it already exists
     """
+    db_abs_path = os.path.join(get_project_root(), db_path)
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     # Verificar si la clave y el valor ya existen
@@ -65,7 +72,11 @@ def load_json_to_db(db_path, json_path):
     :param json_path: Path to the JSON file
     :return: None
     """
-    with open(json_path, 'r') as file:
+    json_abs_path = os.path.join(get_project_root(), json_path)
+    if not os.path.exists(json_abs_path):
+        logger.error(f"File not found: {json_abs_path}")
+        return
+    with open(json_abs_path, 'r') as file:
         rows_inserted = 0
         data = json.load(file)
         for js_code, py_code in data.items():
