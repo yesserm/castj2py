@@ -1,6 +1,8 @@
 import tkinter as tk
+import os
 from tkinter import filedialog, messagebox
 from src.core.converter import convert_json_to_py
+from src.utils.conversion_dict import get_project_root, ConversionDict
 
 
 class MainWindow(tk.Tk):
@@ -11,6 +13,11 @@ class MainWindow(tk.Tk):
         self.load_button = None
         self.title("JSON and JS to Python Converter")
         self.geometry("400x200")
+
+        # Obtener el diccionario de conversión una sola vez
+        db_path = os.path.join(get_project_root(), 'conversion_dict.db')
+        conversion_instance = ConversionDict(db_path)
+        self.conversion_dict = conversion_instance.conversion_dict
 
         self.create_widgets()
 
