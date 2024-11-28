@@ -6,10 +6,15 @@ class ConversionDict:
     _instance = None
     _conversion_dict = None
 
-    def __new__(cls, db_path):
+    def __init__(self, db_path=None):
+        if db_path is not None and self._conversion_dict is None:
+            self._conversion_dict = self.load_conversion_dict(db_path)
+
+    def __new__(cls, db_path=None):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._conversion_dict = cls.load_conversion_dict(db_path)
+            if db_path is not None:
+                cls._conversion_dict = cls.load_conversion_dict(db_path)
         return cls._instance
 
     @classmethod

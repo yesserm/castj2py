@@ -1,4 +1,10 @@
+import os
+import sys
 import logging
+
+from src.utils.conversion_dict import get_project_root
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
 def configure_logging():
@@ -7,7 +13,8 @@ def configure_logging():
     logger = logging.getLogger('app_logger')
     logger.setLevel(logging.DEBUG)
 
-    file_handler = logging.FileHandler('app.log')
+    path_to_log = os.path.join(get_project_root(), '..', 'app.log')
+    file_handler = logging.FileHandler(path_to_log)
     file_handler.setLevel(logging.ERROR)
 
     console_handler = logging.StreamHandler()
