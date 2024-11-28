@@ -41,8 +41,8 @@ class MainWindow(tk.Tk):
 
     def convert_to_python(self):
         if hasattr(self, 'json_file_path'):
-            output_file_path = filedialog.asksaveasfilename(defaultextension=".json",
-                                                            filetypes=[("JSON files", "*.json")])
+            output_file_path = filedialog.asksaveasfilename(defaultextension=".py",
+                                                            filetypes=[("Python files", "*.py")])
             if output_file_path:
                 convert_json_to_py(self.json_file_path, output_file_path)
                 messagebox.showinfo("Conversion Complete", f"Saved converted file to {output_file_path}")

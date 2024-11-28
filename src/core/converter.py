@@ -1,6 +1,6 @@
 import json
 import logging
-from .json_loader import load_json_file
+from .json_loader import load_json_file, get_js_code
 from .js_to_py_translator import translate_js_to_py
 from ..utils.conversion_dict import ConversionDict
 
@@ -11,17 +11,18 @@ def convert_json_to_py(json_file_path, output_file_path):
     logger.info(f"Converting {json_file_path} to Python code and saving to {output_file_path}")
     try:
         data = load_json_file(json_file_path)
-        commands = data['project']['commands']
+        json_code = get_js_code()
         conversion_dict = ConversionDict().get_conversion_dict()
-        for command in data['project']['commands']:
-            if 'command' in command:
-                command['python_code'] = translate_js_to_py(command['command'], conversion_dict)
+        for code in json_code:
+            if code is not None:
+                python_code = translate_js_to_py(code, conversion_dict)
+                python_code = python_code.strip()
                 with open(output_file_path, 'w') as file:
-                    json.dump(data, file, indent=4)
-                generate_python_code(command['python_code'])
+                    file.write(python_code)
+                generate_python_code(python_code)
                 logger.info(f"Conversion complete. Saved to {output_file_path}")
     except Exception as e:
-        logger.error(f"Error converting JSON to Python: {e}")
+        logger.error(f"Error converting JS to Python: {e}")
         raise e
 
 
@@ -42,5 +43,4 @@ def convert_js_file_to_py(js_file_path, output_file_path, db_path):
 
 def generate_python_code(pycode):
     # generate python file from pycode
-
     pass
