@@ -67,3 +67,5 @@ Pipfile.lock
 
 # Otros archivos que quieras ignorar
 # Añade aquí otros archivos y directorios específicos de tu proyecto que quieras ignorar.
+# todos los ficheros terminen dentro de samples
+samples/*.py
