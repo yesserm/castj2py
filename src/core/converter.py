@@ -1,7 +1,7 @@
 import json
 import logging
 from .json_loader import load_json_file, get_js_code
-from .js_to_py_translator import translate_js_to_py
+from .js_to_py_translator import translate_js_to_py, translate_js_to_py_js2py
 from ..utils.conversion_dict import ConversionDict
 
 logger = logging.getLogger('app_logger')
@@ -36,6 +36,19 @@ def convert_js_file_to_py(js_file_path, output_file_path, db_path):
             with open(output_file_path, 'w') as file_output:
                 file_output.write(py_code)
             logger.info(f"Conversion complete. Saved to {output_file_path}")
+    except Exception as e:
+        logger.error(f"Error converting JS to Python: {e}")
+        raise e
+
+
+def convert_js_to_py_js2py(js_code, output_file_path):
+    logger.info(f"Converting JS code to Python code with JS2PY and saving to {output_file_path}")
+    try:
+        logger.info(f"JS code: {js_code}")
+        py_code = translate_js_to_py_js2py(js_code)
+        with open(output_file_path, 'w') as file_output:
+            file_output.write(py_code)
+        logger.info(f"Conversion complete. Saved to {output_file_path}")
     except Exception as e:
         logger.error(f"Error converting JS to Python: {e}")
         raise e

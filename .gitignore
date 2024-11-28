@@ -33,6 +33,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
+app.log
 
 # Archivos y directorios específicos de paquetes
 .pytest_cache/

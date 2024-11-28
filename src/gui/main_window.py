@@ -3,7 +3,7 @@ import os
 import sys
 import logging
 from tkinter import filedialog, messagebox
-from src.core.converter import convert_json_to_py, convert_js_file_to_py
+from src.core.converter import convert_json_to_py, convert_js_file_to_py, convert_js_to_py_js2py
 from src.utils.conversion_dict import get_project_root, ConversionDict
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -21,8 +21,10 @@ class MainWindow(tk.Tk):
         self.load_button = None
         self.convert_js_button = None
         self.python_file_path = None
+        self.is_json_file_loaded = False
+        self.is_js_file_loaded = False
         self.title("JSON and JS to Python Converter")
-        self.geometry("400x300")
+        self.geometry("400x400")
 
         # Obtener el diccionario de conversión una sola vez
         db_path = os.path.join(get_project_root(), '..', 'conversion_dict.db')
@@ -44,19 +46,26 @@ class MainWindow(tk.Tk):
     def load_json_file(self):
         self.json_file_path = filedialog.askopenfilename(filetypes=[("JSON files", "*.json")])
         if self.json_file_path:
+            self.is_json_file_loaded = True
+            self.is_js_file_loaded = False
             messagebox.showinfo("File Loaded", f"Loaded {self.json_file_path}")
 
     def load_js_file(self):
         self.js_file_path = filedialog.askopenfilename(filetypes=[("JavaScript files", "*.js")])
         if self.js_file_path:
+            self.is_js_file_loaded = True
+            self.is_json_file_loaded = False
             messagebox.showinfo("File Loaded", f"Loaded {self.js_file_path}")
 
     def convert_js_to_python(self):
         if hasattr(self, 'js_file_path'):
             output_file_path = filedialog.asksaveasfilename(defaultextension=".py",
                                                             filetypes=[("Python files", "*.py")])
-            if output_file_path:
+            if self.is_json_file_loaded and output_file_path and self.js_file_path and self.conversion_dict:
                 convert_js_file_to_py(self.js_file_path, output_file_path, self.conversion_dict)
+                messagebox.showinfo("Conversion Complete", f"Saved converted file to {output_file_path}")
+            elif self.is_js_file_loaded and output_file_path and self.js_file_path:
+                convert_js_to_py_js2py(self.js_file_path, output_file_path)
                 messagebox.showinfo("Conversion Complete", f"Saved converted file to {output_file_path}")
             else:
                 messagebox.showwarning("No File Loaded", "Please load a JS file first.")

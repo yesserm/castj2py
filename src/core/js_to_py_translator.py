@@ -1,4 +1,8 @@
 import re
+import logging
+import js2py
+
+logger = logging.getLogger('app_logger')
 
 
 def translate_js_to_py(js_cod, conversion_d):
@@ -12,3 +16,13 @@ def translate_js_to_py(js_cod, conversion_d):
     py_cod = re.sub(r'(\w+)\(\)\s*{', r'\1():', py_cod)
     py_cod = re.sub(r'\b(\w+)\s*:\s*', r'\1 = ', py_cod)
     return py_cod.strip()
+
+
+def translate_js_to_py_js2py(js_cod):
+    file_path = js_cod
+    with open(file_path, 'r') as file:
+        js_cod = file.read()
+    logger.info(f"Translating JS to Python with JS2PY code: {js_cod}")
+    py_code = js2py.translate_js(js_cod)
+    logger.info(f"JS2PY code: {py_code}")
+    return py_code
