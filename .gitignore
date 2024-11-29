@@ -16,6 +16,16 @@ venv.bak/
 
 # Archivos de configuración de PyCharm
 .idea/
+.idea/*
+.idea/dataSources/*
+.idea/dataSources.local.xml
+.idea/dataSources.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/jsLibraryMappings.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/django_iml.xml
 *.iml
 
 # Archivos específicos del sistema operativo
